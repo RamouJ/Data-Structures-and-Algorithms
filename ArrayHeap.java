@@ -6,21 +6,13 @@ import datastructures.interfaces.IPriorityQueue;
 import misc.exceptions.EmptyContainerException;
 import misc.exceptions.InvalidElementException;
 
-/**
- * @see IPriorityQueue for details on what each method must do.
- */
+
 public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
-    // See spec: you must implement a implement a 4-heap.
     private static final int NUM_CHILDREN = 4;
 
-    // You MUST use this field to store the contents of your heap.
-    // You may NOT rename this field: we will be inspecting it within
-    // our private tests.
     private T[] heap;
     private int size;
     private IDictionary<T, Integer> map;
-
-    // Feel free to add more fields and constants.
 
     public ArrayHeap() {
         this.size = 0;
@@ -28,26 +20,11 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         this.map = new ChainedHashDictionary();
     }
 
-    /**
-     * This method will return a new, empty array of the given size
-     * that can contain elements of type T.
-     * <p>
-     * Note that each element in the array will initially be null.
-     */
     @SuppressWarnings("unchecked")
     private T[] makeArrayOfT(int arraySize) {
-        // This helper method is basically the same one we gave you
-        // in ArrayDictionary and ChainedHashDictionary.
-        //
-        // As before, you do not need to understand how this method
-        // works, and should not modify it in any way.
         return (T[]) (new Comparable[arraySize]);
     }
 
-    /**
-     * A method stub that you may replace with a helper method for percolating
-     * upwards from a given index, if necessary.
-     */
     private void percolateUp(int index) {
         while (index > 0 && heap[index / NUM_CHILDREN] != null && heap[index / 4].compareTo(heap[index]) > 0) {
             swap(index, index / NUM_CHILDREN);
@@ -56,11 +33,6 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
             percolateUp(index / NUM_CHILDREN);
         }
     }
-
-    /**
-     * A method stub that you may replace with a helper method for percolating
-     * downwards from a given index, if necessary.
-     */
 
     private void percolateDown(int index) {
         boolean needToPercolate = true;
@@ -99,11 +71,6 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         }
     }
 
-
-    /**
-     * A method stub that you may replace with a helper method for determining
-     * which direction an index needs to percolate and percolating accordingly.
-     */
     private void percolate(int index) {
         if (index == 0) {
             percolateDown(index);
@@ -117,11 +84,6 @@ public class ArrayHeap<T extends Comparable<T>> implements IPriorityQueue<T> {
         }
     }
 
-
-    /**
-     * A method stub that you may replace with a helper method for swapping
-     * the elements at two indices in the 'heap' array.
-     */
     private void swap(int a, int b) {
         T temp = heap[a];
         heap[a] = heap[b];
