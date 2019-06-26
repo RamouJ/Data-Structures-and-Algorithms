@@ -11,68 +11,12 @@ import sun.security.provider.certpath.Vertex;
 
 import java.lang.reflect.Array;
 
-/**
- * Represents an undirected, weighted graph, possibly containing self-loops, parallel edges,
- * and unconnected components.
- *
- * Note: This class is not meant to be a full-featured way of representing a graph.
- * We stick with supporting just a few, core set of operations needed for the
- * remainder of the project.
- */
 public class Graph<V, E extends IEdge<V> & Comparable<E>> {
 
     private IDictionary<V, ISet<E>> adjacencyList;
     private IList<E> edgesList;
     private IList<V> vertexList;
-    // NOTE 1:
-    //
-    // Feel free to add as many fields, private helper methods, and private
-    // inner classes as you want.
-    //
-    // And of course, as always, you may also use any of the data structures
-    // and algorithms we've implemented so far.
-    //
-    // Note: If you plan on adding a new class, please be sure to make it a private
-    // static inner class contained within this file. Our testing infrastructure
-    // works by copying specific files from your project to ours, and if you
-    // add new files, they won't be copied and your code will not compile.
-    //
-    //
-    // NOTE 2:
-    //
-    // You may notice that the generic types of Graph are a little bit more
-    // complicated than usual.
-    //
-    // This class uses two generic parameters: V and E.
-    //
-    // - 'V' is the type of the vertices in the graph. The vertices can be
-    //   any type the client wants -- there are no restrictions.
-    //
-    // - 'E' is the type of the edges in the graph. We've constrained Graph
-    //   so that E *must* always be an instance of IEdge<V> AND Comparable<E>.
-    //
-    //   What this means is that if you have an object of type E, you can use
-    //   any of the methods from both the IEdge interface and from the Comparable
-    //   interface
-    //
-    // If you have any additional questions about generics, or run into issues while
-    // working with them, please ask ASAP either on Piazza or during office hours.
-    //
-    // Working with generics is really not the focus of this class, so if you
-    // get stuck, let us know we'll try and help you get unstuck as best as we can.
 
-    /**
-     * Constructs a new graph based on the given vertices and edges.
-     *
-     * Note that each edge in 'edges' represents a unique edge. For example, if 'edges'
-     * contains an entry for '(A,B)' and for '(B,A)', that means there are two parallel
-     * edges between vertex 'A' and vertex 'B'.
-     *
-     * @throws IllegalArgumentException if any edges have a negative weight DONE
-     * @throws IllegalArgumentException if any edges connect to a vertex not present in 'vertices' DONE
-     * @throws IllegalArgumentException if 'vertices' or 'edges' are null or contain null DONE
-     * @throws IllegalArgumentException if 'vertices' contains duplicates DONE
-     */
     public Graph(IList<V> vertices, IList<E> edges) {
         this.vertexList = vertices;
         this.edgesList = edges;
@@ -122,23 +66,11 @@ public class Graph<V, E extends IEdge<V> & Comparable<E>> {
         }
     }
 
-    /**
-     * Sometimes, we store vertices and edges as sets instead of lists, so we
-     * provide this extra constructor to make converting between the two more
-     * convenient.
-     *
-     * @throws IllegalArgumentException if any of the edges have a negative weight
-     * @throws IllegalArgumentException if one of the edges connects to a vertex not
-     *                                  present in the 'vertices' list
-     * @throws IllegalArgumentException if vertices or edges are null or contain null
-     */
     public Graph(ISet<V> vertices, ISet<E> edges) {
         // You do not need to modify this method.
         this(setToList(vertices), setToList(edges));
     }
 
-    // You shouldn't need to call this helper method -- it only needs to be used
-    // in the constructor above.
     private static <T> IList<T> setToList(ISet<T> set) {
         if (set == null) {
             throw new IllegalArgumentException();
@@ -157,9 +89,6 @@ public class Graph<V, E extends IEdge<V> & Comparable<E>> {
         return adjacencyList.size();
     }
 
-    /**
-     * Returns the number of edges contained within this graph.
-     */
     public int numEdges() {
         ISet<E> edgesSet = new ChainedHashSet<>();
         for (KVPair<V, ISet<E>> vertex: adjacencyList) {
@@ -170,14 +99,6 @@ public class Graph<V, E extends IEdge<V> & Comparable<E>> {
         return edgesSet.size();
     }
 
-    /**
-     * Returns the set of all edges that make up the minimum spanning tree of
-     * this graph.
-     *
-     * If there exists multiple valid MSTs, return any one of them.
-     *
-     * Precondition: the graph does not contain any unconnected components.
-     */
     public ISet<E> findMinimumSpanningTree() {
         ISet<E> setToReturn = new ChainedHashSet<>();
         ArrayDisjointSet<V> set = new ArrayDisjointSet();
@@ -199,20 +120,6 @@ public class Graph<V, E extends IEdge<V> & Comparable<E>> {
 
         return setToReturn;
     }
-
-    /**
-     * Returns the edges that make up the shortest path from the start
-     * to the end.
-     *
-     * The first edge in the output list should be the edge leading out
-     * of the starting node; the last edge in the output list should be
-     * the edge connecting to the end node.
-     *
-     * Return an empty list if the start and end vertices are the same.
-     *
-     * @throws NoPathExistsException  if there does not exist a path from the start to the end
-     * @throws IllegalArgumentException if start or end is null or not in the graph
-     */
 
     private static class ExampleComparableVertex<V, E> implements Comparable<ExampleComparableVertex<V, E>> {
 
@@ -294,68 +201,4 @@ public class Graph<V, E extends IEdge<V> & Comparable<E>> {
 
        return shortestPath;
     }
-
-    // public IList<E> findShortestPathBetween(V start, V end) {
-    //     if (start == null || end == null || !adjacencyList.containsKey(start) || !adjacencyList.containsKey(end)) {
-    //         throw new IllegalArgumentException();
-    //     }
-    //
-    //     IList<E> list = new DoubleLinkedList<>();
-    //
-    //     if (start == end) {
-    //         return list;
-    //     }
-    //
-    //     IDictionary<V, ExampleComparableVertex<V, E>> vertices = new ChainedHashDictionary<>();
-    //
-    //     ExampleComparableVertex<V, E> vertexObj;
-    //     ExampleComparableVertex<V, E> newVertexObj;
-    //
-    //     for (V vertex: vertexList){
-    //         vertexObj = new ExampleComparableVertex<>(vertex, Double.POSITIVE_INFINITY, null, null);
-    //         vertices.put(vertex, vertexObj);
-    //     }
-    //
-    //     newVertexObj = new ExampleComparableVertex<>(start, 0.0, null, null);
-    //     vertices.put(start, newVertexObj);
-    //
-    //     IPriorityQueue<ExampleComparableVertex<V, E>> queue = new ArrayHeap<>();
-    //     //add source
-    //     queue.add(vertices.get(start));
-    //
-    //     ISet<ExampleComparableVertex> checker = new ChainedHashSet<>();
-    //
-    //     while (!queue.isEmpty()){
-    //         ExampleComparableVertex<V, E> minVert = queue.removeMin();
-    //
-    //         ISet<E> edges = adjacencyList.get(minVert.vertex);
-    //
-    //         if (!checker.contains(minVert)) {
-    //             for (E edge : edges) {
-    //                 ExampleComparableVertex<V, E> vert = vertices.get(edge.getOtherVertex(minVert.vertex));
-    //                 double oldCost = vert.cost;
-    //                 double newCost = vert.cost + edge.getWeight();
-    //                 if (newCost < oldCost){
-    //                     ExampleComparableVertex<V, E> newVertObject = new ExampleComparableVertex<>(vert.vertex,
-    //                             newCost, minVert.vertex, edge);
-    //                     queue.replace(vert, newVertObject);
-    //
-    //                 }
-    //
-    //             }
-    //         }
-    //
-    //     }
-    //
-    //     //Go stuck on creating the final lsit to return...
-    //
-    //     ExampleComparableVertex<V, E> target = new ExampleComparableVertex<>(end, 0, null, null);
-    //
-    //     while (target.vertex != start) {
-    //         target = new ExampleComparableVertex<>(target.preVer, target.cost, null, null);
-    //         list.add(target.vertex);
-    //     }
-    //
-    //     return list;
-    // }
 }
