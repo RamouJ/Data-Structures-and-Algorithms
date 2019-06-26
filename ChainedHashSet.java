@@ -8,15 +8,10 @@ import datastructures.interfaces.ISet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-/**
- * @see ISet for more details on what each method is supposed to do.
- */
 public class ChainedHashSet<T> implements ISet<T> {
-    // This should be the only field you need
     private IDictionary<T, Boolean> map;
 
     public ChainedHashSet() {
-        // No need to change this method
         this.map = new ChainedHashDictionary<>();
     }
 
@@ -53,11 +48,9 @@ public class ChainedHashSet<T> implements ISet<T> {
     }
 
     private static class SetIterator<T> implements Iterator<T> {
-        // This should be the only field you need
         private Iterator<KVPair<T, Boolean>> iter;
 
         public SetIterator(Iterator<KVPair<T, Boolean>> iter) {
-            // No need to change this method.
             this.iter = iter;
         }
 
