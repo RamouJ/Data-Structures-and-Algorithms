@@ -5,19 +5,10 @@ import datastructures.interfaces.IDictionary;
 import datastructures.interfaces.IDisjointSet;
 import datastructures.interfaces.IList;
 
-/**
- * @see IDisjointSet for more details.
- */
 public class ArrayDisjointSet<T> implements IDisjointSet<T> {
-    // Note: do NOT rename or delete this field. We will be inspecting it
-    // directly within our private tests.
     private int[] pointers;
     private int index;
     private IDictionary<T, Integer> dict;
-
-    // However, feel free to add more fields and private helper methods.
-    // You will probably need to add one or two more fields in order to
-    // successfully implement this class.
 
     public ArrayDisjointSet() {
         this.index = 0;
