@@ -3,40 +3,18 @@ package datastructures.concrete.dictionaries;
 import datastructures.interfaces.IDictionary;
 import misc.exceptions.NoSuchKeyException;
 
-/**
- * @see datastructures.interfaces.IDictionary
- */
 public class ArrayDictionary<K, V> implements IDictionary<K, V> {
-    // You may not change or rename this field.
-    // We will be inspecting it in our private tests.
     private Pair<K, V>[] pairs;
     private int size;
-
-    // You may add extra fields or helper methods though!
 
     public ArrayDictionary() {
         this.pairs = new Pair[10];
         this.size = 0;
     }
 
-    /**
-     * This method will return a new, empty array of the given size
-     * that can contain Pair<K, V> objects.
-     * <p>
-     * Note that each element in the array will initially be null.
-     */
+
     @SuppressWarnings("unchecked")
     private Pair<K, V>[] makeArrayOfPairs(int arraySize) {
-        // It turns out that creating arrays of generic objects in Java
-        // is complicated due to something known as 'type erasure'.
-        //
-        // We've given you this helper method to help simplify this part of
-        // your assignment. Use this helper method as appropriate when
-        // implementing the rest of this class.
-        //
-        // You are not required to understand how this method works, what
-        // type erasure is, or how arrays and generics interact. Do not
-        // modify this method in any way.
         return (Pair<K, V>[]) (new Pair[arraySize]);
     }
 
